@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../screens/mis_horas.dart';
 import '../screens/perfil.dart';
-import '../screens/ver_actividades.dart'; 
-
+import '../screens/ver_actividades.dart';
+import '../screens/registrar_actividad.dart';
 
 //Pnatlla principal de la aplicacion(menu de navegaion)
 class Home extends StatefulWidget {
@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       //color de fondo general
       backgroundColor: const Color(0xFFF4F6FA),
-      
+
       //Barra superior
       appBar: AppBar(
         backgroundColor: const Color(0xFF2E4A9E),
@@ -35,14 +35,14 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      
+
       //contenido principal
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             const SizedBox(height: 20),
-            
+
             //avatar representativo
             CircleAvatar(
               radius: 60,
@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
             ),
 
             const SizedBox(height: 15),
-            
+
             //nombre de la institucion
             const Text(
               'UCAD',
@@ -68,10 +68,7 @@ class _HomeState extends State<Home> {
 
             const Text(
               'SERVICIO SOCIAL',
-              style: TextStyle(
-                color: Colors.grey,
-                letterSpacing: 2,
-              ),
+              style: TextStyle(color: Colors.grey, letterSpacing: 2),
             ),
 
             const SizedBox(height: 30),
@@ -94,15 +91,13 @@ class _HomeState extends State<Home> {
             ),
 
             const SizedBox(height: 20),
-            
+
             //tarjeta que navega a la pantalla mis horas
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const MisHoras(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const MisHoras()),
                 );
               },
               child: _buildCard(
@@ -113,16 +108,26 @@ class _HomeState extends State<Home> {
             ),
 
             const SizedBox(height: 20),
-            
+
             //tarjeta pendiente (navegacion)
-            _buildCard(
-              Icons.add,
-              'Registrar actividad',
-              'Reportar nuevas horas',
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RegistrarActividad(),
+                  ),
+                );
+              },
+              child: _buildCard(
+                Icons.add,
+                'Registrar actividad',
+                'Reportar nuevas horas',
+              ),
             ),
 
             const SizedBox(height: 30),
-            
+
             //mensaje informativo
             Container(
               padding: const EdgeInsets.all(16),
@@ -145,7 +150,6 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      
 
       //Menu inferios de navegacion
       bottomNavigationBar: BottomNavigationBar(
@@ -157,46 +161,36 @@ class _HomeState extends State<Home> {
           setState(() {
             _currentIndex = index;
           });
-          
+
           //navega a mis horas
           if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => const MisHoras(),
-              ),
+              MaterialPageRoute(builder: (context) => const MisHoras()),
             );
           }
-          
+
           //navega a perfil
           if (index == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => const Perfil(),
-              ),
+              MaterialPageRoute(builder: (context) => const Perfil()),
             );
           }
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(
             icon: Icon(Icons.access_time),
             label: 'Mis horas',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
     );
   }
 
-//menu reutilizable para construir tarjetas del menu
+  //menu reutilizable para construir tarjetas del menu
   Widget _buildCard(IconData icon, String title, String subtitle) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -223,12 +217,7 @@ class _HomeState extends State<Home> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                  ),
-                ),
+                Text(subtitle, style: const TextStyle(color: Colors.white70)),
               ],
             ),
           ),

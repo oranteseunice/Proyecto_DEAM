@@ -91,7 +91,7 @@ class Login extends StatelessWidget {
 
           const SizedBox(height: 8),
           
-          //campo de contraseña reutilizable con ocultar/mostrar
+          //campo de contraseña con ocultar/mostrar
           const PasswordField(),
 
           const SizedBox(height: 15),
