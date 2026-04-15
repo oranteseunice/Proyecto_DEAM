@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'screens/login.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  await Supabase.initialize(
+    url: 'https://pfjzadieleyhgkjerrqy.supabase.co',
+    anonKey: 'sb_publishable_tNHcx-K7W7FvFIi9IfELng_jgTx-ECK',
+  );
+
   runApp(const MyApp());
 }
 
@@ -11,9 +18,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const Login(),
+      home: Login(),
     );
   }
 }

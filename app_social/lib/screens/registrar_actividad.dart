@@ -6,7 +6,9 @@ import 'mis_horas.dart';
 import 'perfil.dart';
 
 class RegistrarActividad extends StatefulWidget {
-  const RegistrarActividad({super.key});
+  final String rol;
+
+  const RegistrarActividad({super.key, required this.rol});
 
   @override
   State<RegistrarActividad> createState() => _RegistrarActividadState();
@@ -41,7 +43,6 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
 
             const SizedBox(height: 20),
 
-            // comentario
             TextField(
               controller: comentarioController,
               maxLines: 3,
@@ -55,7 +56,6 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
 
             const SizedBox(height: 20),
 
-            // botón simulado
             ElevatedButton.icon(
               onPressed: () {
                 setState(() {
@@ -68,7 +68,6 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
 
             const SizedBox(height: 20),
 
-            // mostrar archivo
             if (archivoSeleccionado != null)
               const Text(
                 "Archivo: evidencia.pdf",
@@ -77,7 +76,6 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
 
             const SizedBox(height: 30),
 
-            // botón enviar
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2E4A9E),
@@ -109,24 +107,33 @@ class _RegistrarActividadState extends State<RegistrarActividad> {
         currentIndex: 0,
         onTap: (index) {
 
+          // HOME
           if (index == 0) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const Home()),
+              MaterialPageRoute(
+                builder: (context) => Home(rol: widget.rol),
+              ),
             );
           }
 
+          // MIS HORAS
           if (index == 1) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const MisHoras()),
+              MaterialPageRoute(
+                builder: (context) => MisHoras(rol: widget.rol),
+              ),
             );
           }
 
+          // PERFIL
           if (index == 2) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const Perfil()),
+              MaterialPageRoute(
+                builder: (context) => Perfil(rol: widget.rol),
+              ),
             );
           }
         },

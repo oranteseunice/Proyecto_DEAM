@@ -1,26 +1,28 @@
-import 'package:app_social/botones/password.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../botones/button.dart';
 import 'home.dart';
 
-//Pnatalla de inicio de sesion de la aplicacion 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final correoController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //color de fondo general
       backgroundColor: const Color(0xFFF5F6F8),
-
-      //ListView permite scroll en pantallas pequeñas
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-
           const SizedBox(height: 40),
-          
-          //Avatar que representa el  logo del usuario
+
           Center(
             child: CircleAvatar(
               radius: 60,
@@ -29,8 +31,7 @@ class Login extends StatelessWidget {
           ),
 
           const SizedBox(height: 30),
-          
-          //Titulo Principal de la pantalla
+
           const Text(
             'UCAD Servicio Social',
             textAlign: TextAlign.center,
@@ -42,8 +43,7 @@ class Login extends StatelessWidget {
           ),
 
           const SizedBox(height: 5),
-          
-          //Linea decorativa debajo del titulo
+
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 4,
@@ -52,26 +52,20 @@ class Login extends StatelessWidget {
           ),
 
           const SizedBox(height: 10),
-          
-          //texto de bienvenida
+
           const Text(
             'Bienvenido, por favor inicia sesión.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
 
           const SizedBox(height: 30),
-          
-          //campo de entrada para el correo electronico
+
+          // CORREO
           TextField(
+            controller: correoController,
             decoration: InputDecoration(
               hintText: 'Correo electronico',
-              hintStyle: const TextStyle(
-                color: Colors.grey,
-              ),
               prefixIcon: const Icon(Icons.email, color: Color(0xFFF0B429)),
               filled: true,
               fillColor: Colors.white,
@@ -82,67 +76,82 @@ class Login extends StatelessWidget {
           ),
 
           const SizedBox(height: 20),
-          
-          //Etiqueta del campo contraseña
+
           const Text(
             'Contraseña',
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
 
           const SizedBox(height: 8),
-          
-          //campo de contraseña con ocultar/mostrar
-          const PasswordField(),
 
-          const SizedBox(height: 15),
-          
-          //Texto de recuperacion de contraseña
-          const Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              '¿Olvidaste tu contraseña?',
-              style: TextStyle(
-                color: Color(0xFF1E3A8A),
-                fontWeight: FontWeight.w500,
+          // PASSWORD
+          TextField(
+            controller: passwordController,
+            obscureText: true,
+            decoration: InputDecoration(
+              hintText: 'Contraseña',
+              prefixIcon: const Icon(Icons.lock, color: Color(0xFFF0B429)),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
 
           const SizedBox(height: 30),
-          
-          //boton principal que navega a la pantalla Home
+
+          // BOTÓN LOGIN
           BotonPrincipal(
             texto: 'Iniciar sesión',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home(),
-                ),
-              ); 
+            onPressed: () async {
+              final supabase = Supabase.instance.client;
+
+              // VALIDAR CAMPOS
+              if (correoController.text.isEmpty ||
+                  passwordController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Completa todos los campos'),
+                  ),
+                );
+                return;
+              }
+
+              try {
+                final user = await supabase
+                    .from('usuarios')
+                    .select()
+                    .eq('correo', correoController.text.trim())
+                    .eq('password', passwordController.text.trim())
+                    .maybeSingle();
+
+                if (user != null) {
+                  final rol = user['rol']; // 👈 AQUÍ TOMAMOS EL ROL
+
+                  print("ROL: $rol"); // opcional
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Home(rol: rol), // 👈 PASAMOS EL ROL
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Correo o contraseña incorrectos'),
+                    ),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error: $e'),
+                  ),
+                );
+              }
             },
-          ),
-
-          const SizedBox(height: 30),
-          
-          //texto de registro
-          const Center(
-            child: Text(
-              '¿No tienes cuenta?',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
-
-          const SizedBox(height: 10),
-
-          //opcion para solicitar acceso
-          const Center(
-            child: Text(
-              'Solicita acceso aquí →',
-              style: TextStyle(
-                color: Color(0xFF1E3A8A),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
 
           const SizedBox(height: 30),

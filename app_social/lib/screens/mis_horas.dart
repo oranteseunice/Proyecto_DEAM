@@ -3,21 +3,20 @@ import 'home.dart';
 
 //Pantalla de muestra el progreso de horas del usuario
 class MisHoras extends StatelessWidget {
-  const MisHoras({super.key});
+  final String rol;
+
+  const MisHoras({super.key, required this.rol});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //colo de fondo
       backgroundColor: const Color(0xFFF4F6FA),
-      
-      //barra superior
+
       appBar: AppBar(
         backgroundColor: const Color(0xFF2E4A9E),
         title: const Text("Mis horas"),
       ),
-      
-      //contenido principal
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -25,7 +24,7 @@ class MisHoras extends StatelessWidget {
           children: [
 
             const SizedBox(height: 10),
-            //titulo de seccion
+
             const Text(
               "RESUMEN DE PROGRESO",
               style: TextStyle(
@@ -35,8 +34,7 @@ class MisHoras extends StatelessWidget {
             ),
 
             const SizedBox(height: 20),
-             
-             //tarjeta de horas generales
+
             _buildCard(
               icon: Icons.assignment,
               title: "Servicio Social Obligatorio",
@@ -44,7 +42,7 @@ class MisHoras extends StatelessWidget {
             ),
 
             const SizedBox(height: 20),
-            //tarjeta de horas ambientales
+
             _buildCard(
               icon: Icons.eco,
               title: "Actividades Ecológicas",
@@ -52,28 +50,24 @@ class MisHoras extends StatelessWidget {
             ),
 
             const SizedBox(height: 30),
-             
-             //tarjeta de resumen total de hora
-            _buildTotalCard(),
 
+            _buildTotalCard(),
           ],
         ),
       ),
-      
-      //menu inferior
+
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color(0xFF2E4A9E),
         unselectedItemColor: Colors.grey,
         currentIndex: 1,
-        //navegacion hacia otras pantallas
         onTap: (index) {
-          
-          //ir a pantalla principal
+
+          // Volver a Home manteniendo el rol
           if (index == 0) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const Home(),
+                builder: (context) => Home(rol: rol),
               ),
             );
           }
@@ -96,9 +90,7 @@ class MisHoras extends StatelessWidget {
       ),
     );
   }
-  
 
-  //metodo reutilizable para tarjetas de informacion
   Widget _buildCard({
     required IconData icon,
     required String title,
@@ -112,7 +104,6 @@ class MisHoras extends StatelessWidget {
       ),
       child: Row(
         children: [
-          //icono representativo
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -123,7 +114,6 @@ class MisHoras extends StatelessWidget {
           ),
           const SizedBox(width: 16),
 
-          //informacion de la tarjeta
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,8 +137,7 @@ class MisHoras extends StatelessWidget {
       ),
     );
   }
-  
-  //tarjeta destacada con el total de horas acumuladas
+
   Widget _buildTotalCard() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -172,8 +161,7 @@ class MisHoras extends StatelessWidget {
           ),
 
           const SizedBox(width: 20),
-          
-          //informacion total
+
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

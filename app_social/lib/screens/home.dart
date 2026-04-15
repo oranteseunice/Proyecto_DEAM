@@ -3,26 +3,27 @@ import '../screens/mis_horas.dart';
 import '../screens/perfil.dart';
 import '../screens/ver_actividades.dart';
 import '../screens/registrar_actividad.dart';
+import '../screens/admin/proyeccion_social.dart';
 
-//Pnatlla principal de la aplicacion(menu de navegaion)
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final String rol;
+
+  const Home({super.key, required this.rol});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  //indice del menu inferior
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final esAdmin = widget.rol == 'admin';
+
     return Scaffold(
-      //color de fondo general
       backgroundColor: const Color(0xFFF4F6FA),
 
-      //Barra superior
       appBar: AppBar(
         backgroundColor: const Color(0xFF2E4A9E),
         elevation: 0,
@@ -36,14 +37,12 @@ class _HomeState extends State<Home> {
         ],
       ),
 
-      //contenido principal
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             const SizedBox(height: 20),
 
-            //avatar representativo
             CircleAvatar(
               radius: 60,
               backgroundColor: Colors.grey.shade200,
@@ -56,7 +55,6 @@ class _HomeState extends State<Home> {
 
             const SizedBox(height: 15),
 
-            //nombre de la institucion
             const Text(
               'UCAD',
               style: TextStyle(
@@ -73,13 +71,13 @@ class _HomeState extends State<Home> {
 
             const SizedBox(height: 30),
 
-            //tarjeta que navega a la pantalla de actividades
+            // VER ACTIVIDADES
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const VerActividades(),
+                    builder: (context) => VerActividades(rol: widget.rol),
                   ),
                 );
               },
@@ -92,12 +90,14 @@ class _HomeState extends State<Home> {
 
             const SizedBox(height: 20),
 
-            //tarjeta que navega a la pantalla mis horas
+            // MIS HORAS
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MisHoras()),
+                  MaterialPageRoute(
+                    builder: (context) => MisHoras(rol: widget.rol),
+                  ),
                 );
               },
               child: _buildCard(
@@ -109,13 +109,13 @@ class _HomeState extends State<Home> {
 
             const SizedBox(height: 20),
 
-            //tarjeta pendiente (navegacion)
+            // REGISTRAR ACTIVIDAD
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const RegistrarActividad(),
+                    builder: (context) => RegistrarActividad(rol: widget.rol),
                   ),
                 );
               },
@@ -125,10 +125,28 @@ class _HomeState extends State<Home> {
                 'Reportar nuevas horas',
               ),
             ),
+            const SizedBox(height: 20),
+
+            // PANEL ADMIN SOLO SI ES ADMIN
+            if (esAdmin)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProyeccionSocial(),
+                    ),
+                  );
+                },
+                child: _buildCard(
+                  Icons.admin_panel_settings,
+                  'Panel Administrativo',
+                  'Gestión de actividades',
+                ),
+              ),
 
             const SizedBox(height: 30),
 
-            //mensaje informativo
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -151,30 +169,28 @@ class _HomeState extends State<Home> {
         ),
       ),
 
-      //Menu inferios de navegacion
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color(0xFF2E4A9E),
         unselectedItemColor: Colors.grey,
         currentIndex: _currentIndex,
-        //manejo de navegacion entre pantallas
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
 
-          //navega a mis horas
           if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MisHoras()),
+              MaterialPageRoute(
+                builder: (context) => MisHoras(rol: widget.rol),
+              ),
             );
           }
 
-          //navega a perfil
           if (index == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const Perfil()),
+              MaterialPageRoute(builder: (context) => Perfil(rol: widget.rol)),
             );
           }
         },
@@ -190,7 +206,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  //menu reutilizable para construir tarjetas del menu
   Widget _buildCard(IconData icon, String title, String subtitle) {
     return Container(
       padding: const EdgeInsets.all(16),

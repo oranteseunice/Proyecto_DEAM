@@ -4,29 +4,27 @@ import 'mis_horas.dart';
 
 //pantalla que muestra la informacion del usuario
 class Perfil extends StatelessWidget {
-  const Perfil({super.key});
+  final String rol;
+
+  const Perfil({super.key, required this.rol});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //color de fondo
       backgroundColor: const Color(0xFFF4F6FA),
-      
-      //barra superior
+
       appBar: AppBar(
         backgroundColor: const Color(0xFF2E4A9E),
         title: const Text("Mi perfil"),
       ),
- 
-      //contenido principal
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
 
             const SizedBox(height: 20),
-            
-            //avatar del usuario
+
             const CircleAvatar(
               radius: 60,
               backgroundColor: Color(0xFF2E4A9E),
@@ -38,7 +36,7 @@ class Perfil extends StatelessWidget {
             ),
 
             const SizedBox(height: 20),
-            //nombre del usuario
+
             const Text(
               "Salma Andrade",
               style: TextStyle(
@@ -48,16 +46,14 @@ class Perfil extends StatelessWidget {
             ),
 
             const SizedBox(height: 5),
-            
-            //carrea o informacion adicional
+
             const Text(
               "Ingeniería en Sistemas",
               style: TextStyle(color: Colors.grey),
             ),
 
             const SizedBox(height: 30),
-             
-             //tarjetas de informacion del usuario
+
             _buildInfoCard(Icons.badge, "Carnet", "UCAD2021001"),
             const SizedBox(height: 15),
 
@@ -70,9 +66,7 @@ class Perfil extends StatelessWidget {
             _buildInfoCard(Icons.access_time, "Horas completadas", "160 horas"),
 
             const SizedBox(height: 30),
-            
 
-            //boton para cerrar sesion (sin funcionalidad por ahora)
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2E4A9E),
@@ -86,34 +80,32 @@ class Perfil extends StatelessWidget {
               icon: const Icon(Icons.logout),
               label: const Text("Cerrar sesión"),
             ),
-
           ],
         ),
       ),
 
-      //menu inferior de navegacion
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color(0xFF2E4A9E),
         unselectedItemColor: Colors.grey,
         currentIndex: 2,
-        //navegacion entre pantallas
         onTap: (index) {
 
+          // IR A HOME
           if (index == 0) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const Home(),
+                builder: (context) => Home(rol: rol),
               ),
             );
           }
-          
-          //ir a mis horas
+
+          // IR A MIS HORAS
           if (index == 1) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const MisHoras(),
+                builder: (context) => MisHoras(rol: rol),
               ),
             );
           }
@@ -130,8 +122,7 @@ class Perfil extends StatelessWidget {
       ),
     );
   }
-  
-  //metodo reurilizable para mostrar infomacion del usuario
+
   Widget _buildInfoCard(IconData icon, String title, String value) {
     return Container(
       padding: const EdgeInsets.all(16),

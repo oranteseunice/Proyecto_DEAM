@@ -5,28 +5,27 @@ import 'perfil.dart';
 
 //pantalla que muestra las actividades disponibles
 class VerActividades extends StatelessWidget {
-  const VerActividades({super.key});
+  final String rol;
+
+  const VerActividades({super.key, required this.rol});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //color de fondo
       backgroundColor: const Color(0xFFF4F6FA),
-      
-      //barra superior
+
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 216, 184, 25),
         title: const Text("Actividades"),
       ),
-      
-      //contenido principal
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
 
             const SizedBox(height: 20),
-            //tarjetas de las horas disponibles
+
             _buildCard(Icons.eco, "Reforestación", "10 horas"),
             const SizedBox(height: 15),
 
@@ -38,40 +37,39 @@ class VerActividades extends StatelessWidget {
           ],
         ),
       ),
-      
 
-      //menu inferior de navegacion
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color.fromARGB(255, 223, 196, 19),
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
-        //navegacion entre pantallas
         onTap: (index) {
-          
-          //ir a inicio
+
+          // HOME
           if (index == 0) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const Home(),
+                builder: (context) => Home(rol: rol),
               ),
             );
           }
-          //ir a mis horas
+
+          // MIS HORAS
           if (index == 1) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const MisHoras(),
+                builder: (context) => MisHoras(rol: rol),
               ),
             );
           }
-           //ir a pefil
+
+          // PERFIL
           if (index == 2) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const Perfil(),
+                builder: (context) => Perfil(rol: rol),
               ),
             );
           }
@@ -95,11 +93,8 @@ class VerActividades extends StatelessWidget {
       ),
       child: Row(
         children: [
-          //icono de la actividad
           Icon(icon, color: const Color.fromARGB(255, 215, 175, 32)),
-
           const SizedBox(width: 16),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -111,7 +106,6 @@ class VerActividades extends StatelessWidget {
               ),
             ],
           )
-
         ],
       ),
     );
