@@ -127,14 +127,14 @@ class _LoginState extends State<Login> {
                     .maybeSingle();
 
                 if (user != null) {
-                  final rol = user['rol']; // 👈 AQUÍ TOMAMOS EL ROL
+                  final rol = user['rol']; // AQUÍ TOMAMOS EL ROL
 
                   print("ROL: $rol"); // opcional
 
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Home(rol: rol), // 👈 PASAMOS EL ROL
+                      builder: (context) => Home(rol: rol), //  PASAMOS EL ROL
                     ),
                   );
                 } else {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'crear_usuario.dart';
 
 class ProyeccionSocial extends StatefulWidget {
   const ProyeccionSocial({super.key});
@@ -82,6 +83,10 @@ class _ProyeccionSocialState extends State<ProyeccionSocial> {
                                 user['correo'] ?? '',
                                 style: const TextStyle(color: Colors.white70),
                               ),
+                              Text(
+                                user['rol'] ?? '',
+                                style: const TextStyle(color: Colors.white54),
+                              ),
                             ],
                           ),
                         ),
@@ -99,12 +104,19 @@ class _ProyeccionSocialState extends State<ProyeccionSocial> {
               ),
       ),
 
-      // BOTÓN PARA CREAR USUARIO 
+      // BOTÓN CREAR USUARIO
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFFF0B429),
         child: const Icon(Icons.add),
         onPressed: () {
-          // pemdiente pantalla de agregar usuario
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CrearUsuario(),
+            ),
+          ).then((_) {
+            obtenerUsuarios(); // refresca lista
+          });
         },
       ),
     );
